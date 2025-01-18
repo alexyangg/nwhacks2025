@@ -3,8 +3,9 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
-// import ingredients from "./routes/ingredients.js";
-// import recipes from "./routes/recipes.js";
+import authRoutes from "./routes/auth.js";
+import ingredientRoutes from "./routes/ingredients.js";
+import recipeRoutes from "./routes/recipes.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -15,8 +16,9 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-// app.use("/api/ingredients", ingredients);
-// app.use("/api/recipes", recipes);
+app.use("/api/auth", authRoutes);
+app.use("/api/ingredients", ingredientRoutes);
+app.use("/api/recipes", recipeRoutes);
 
 // Start the server
 app.listen(PORT, () => {

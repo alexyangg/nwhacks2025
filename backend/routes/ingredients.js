@@ -9,7 +9,7 @@ const router = express.Router();
 
 // add an ingredient to account's inventory
 router.post("/add", async (req, res) => {
-  const { name, quantity, expiryDate, image, user } = req.body();
+  const { name, quantity, expiryDate, image } = req.body();
   try {
     const newIngredient = new Ingredient({
       name,
