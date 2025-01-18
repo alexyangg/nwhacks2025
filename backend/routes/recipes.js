@@ -1,7 +1,7 @@
 import express from "express";
-import Recipe from "../models/Recipe";
-import authMiddleware from "../middleware/auth";
-import Account from "../models/Account";
+import Recipe from "../models/Recipe.js";
+import authMiddleware from "../middleware/auth.js";
+import Account from "../models/Account.js";
 
 const router = express.Router();
 

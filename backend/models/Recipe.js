@@ -3,14 +3,14 @@ import mongoose from "mongoose";
 const recipeSchema = new mongoose.Schema(
   {
     recipeId: {
-      Type: String,
+      type: String,
       required: true,
     },
     image: {
-      Type: String,
+      type: String,
     },
     title: {
-      Type: String,
+      type: String,
       required: true,
     },
     user: {

@@ -3,19 +3,19 @@ import mongoose from "mongoose";
 const ingredientSchema = new mongoose.Schema(
   {
     name: {
-      Type: String,
+      type: String,
       required: true,
     },
     quantity: {
-      Type: Number,
+      type: Number,
       required: true,
     },
     expiryDate: {
-      Type: Date,
+      type: Date,
       required: true,
     },
     image: {
-      Type: String,
+      type: String,
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
