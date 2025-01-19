@@ -16,37 +16,42 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../context/AuthProvider";
 
-export default function Login() {
+export default function Signup() {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState(""); // State for email input
   const [password, setPassword] = useState(""); // State for password input
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(""); // State for error messages
+  const [success, setSuccess] = useState("");
   const navigate = useNavigate(); // React Router's navigation function
-  const { setIsAuthenticated } = useContext(AuthContext);
 
-  const handleLogin = async () => {
-    // Replace with actual authentication
-    // const correctEmail = "test@example.com";
-    // const correctPassword = "password123";
+  const handleSignup = async () => {
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        "http://localhost:5000/api/auth/signup",
         {
+          name,
           email,
           password,
         }
       );
 
-      localStorage.setItem("authToken", response.data.token);
-      setIsAuthenticated(true);
+      setSuccess("Account created successfully! Redirecting to login...");
+      setError("");
 
-      navigate("/dashboard/ingredients");
+      setTimeout(() => navigate("/login"), 2000);
     } catch (error) {
-      console.error("Error logging in:", error.message);
+      console.error("Error signing up:", error.message);
       setError(
         error.response?.data?.message ||
           "Something went wrong. Please try again."
       );
+      setSuccess("");
     }
   };
 
@@ -61,7 +66,7 @@ export default function Login() {
       <Box w="400px" p="8" bg="white" borderRadius="lg" boxShadow="md">
         {/* Heading */}
         <Heading as="h2" size="lg" textAlign="center" mb="6" color="green.500">
-          Welcome Back
+          Create an Account
         </Heading>
 
         {/* Error Alert */}
@@ -72,8 +77,28 @@ export default function Login() {
           </Alert>
         )}
 
-        {/* Login Form */}
+        {/* Success Alert */}
+        {success && (
+          <Alert status="success" mb="4" borderRadius="md">
+            <AlertIcon />
+            {success}
+          </Alert>
+        )}
+
+        {/* Signup Form */}
         <VStack spacing="4" align="stretch">
+          {/* Name Input */}
+          <FormControl id="name" isRequired>
+            <FormLabel>Name</FormLabel>
+            <Input
+              type="text"
+              placeholder="Enter your name"
+              value={name}
+              onChange={(e) => setName(e.target.value)} // Update name state
+              focusBorderColor="teal.500"
+            />
+          </FormControl>
+
           {/* Email Input */}
           <FormControl id="email" isRequired>
             <FormLabel>Email Address</FormLabel>
@@ -98,30 +123,35 @@ export default function Login() {
             />
           </FormControl>
 
-          {/* Forgot Password */}
-          <Box textAlign="right">
-            <Link color="teal.500" fontSize="sm">
-              Forgot Password?
-            </Link>
-          </Box>
+          {/* Confirm Password Input */}
+          <FormControl id="confirmPassword" isRequired>
+            <FormLabel>Confirm Password</FormLabel>
+            <Input
+              type="password"
+              placeholder="Confirm your password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)} // Update confirmPassword state
+              focusBorderColor="teal.500"
+            />
+          </FormControl>
 
-          {/* Login Button */}
+          {/* Signup Button */}
           <Button
             colorScheme="green"
             size="lg"
             w="100%"
             mt="4"
-            onClick={handleLogin}
+            onClick={handleSignup}
           >
-            Login
+            Signup
           </Button>
         </VStack>
 
-        {/* Sign Up Link */}
+        {/* Login Link */}
         <Text mt="6" textAlign="center" fontSize="sm">
-          Don't have an account?{" "}
-          <Link color="teal.500" href="/signup">
-            Sign Up
+          Already have an account?{" "}
+          <Link color="teal.500" href="/login">
+            Login
           </Link>
         </Text>
       </Box>

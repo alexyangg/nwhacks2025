@@ -50,6 +50,7 @@ export default function Sidebar() {
                     Food Bank Locator
                 </NavLink>
             </ListItem>
+
         </List>
     </Container>
   )
