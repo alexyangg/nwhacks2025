@@ -15,6 +15,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import FoodBankLocator from "./pages/FoodBankLocator";
 import Recipes from "./pages/Recipes";
+import MyRecipes from './pages/MyRecipes';
 import { AuthProvider } from "./context/AuthProvider.jsx";
 
 // router and routes
