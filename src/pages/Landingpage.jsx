@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, HStack, Spacer, VStack, Image } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, HStack, Spacer, VStack, Image, Text } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
 export default function Landingpage() {
@@ -16,13 +16,21 @@ export default function Landingpage() {
       >
         {/* Title */}
         <Heading
-          as="h1"
-          fontSize="96px"
-          fontWeight="bold"
-          fontFamily="Roboto, sans-serif"
-          mb={8}
-        >
-          Welcome to WasteNot
+            as="h1"
+            fontSize="96px"
+            fontWeight="bold"
+            fontFamily="Roboto, sans-serif"
+            mb={8}
+            alignContent="horizontal"
+            >
+            Welcome to{" "}
+            <Text
+                as="span"
+                bgGradient="linear(to-r, green.400, yellow.400, orange.400)" // Gradient from green to yellow to orange
+                bgClip="text" // Clip the gradient to the text
+            >
+                WasteNot
+            </Text>
         </Heading>
 
         {/* Get Started Button */}

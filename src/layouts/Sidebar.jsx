@@ -5,7 +5,13 @@ import { NavLink } from 'react-router-dom';
 export default function Sidebar() {
   return (
     <Container>
-        <Heading as="h1" pb="20px" color="orange.400">WasteNot</Heading>
+        <Heading
+            bgGradient="linear(to-r, green.400, yellow.400, orange.400)" // Gradient from green to yellow to orange
+            bgClip="text" // Clip the gradient to the text
+            marginBottom="30px"
+        >
+            WasteNot
+        </Heading>
         <List color="white" font="1.2em" spacing={4}>
             <ListItem>
                 <NavLink to="/">
