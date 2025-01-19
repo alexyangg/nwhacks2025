@@ -78,6 +78,8 @@ export default function Landingpage() {
         h="300px" // Height of the cropped container
         borderRadius="md"
         boxShadow="lg"
+        pointerEvents="none" // Prevent click and hover interactions
+        outline="none" // Ensure no outline on hover or focus
       />
     </Box>
   );
