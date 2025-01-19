@@ -12,6 +12,7 @@ import Create from './pages/Create'
 import Landingpage from './pages/Landingpage'
 import Login from './pages/Login'
 import FoodBankLocator from './pages/FoodBankLocator'
+import Recipes from './pages/Recipes'
 
 // router and routes
 const router = createBrowserRouter(
@@ -21,8 +22,9 @@ const router = createBrowserRouter(
       <Route path="/login" element={<Login />} />
 
       <Route path="/dashboard" element={<RootLayout />}>
-        <Route index element={<Landingpage />} />
-        <Route path="ingredients" element={<Ingredients />} loader={tasksLoader}/>
+        <Route index element={<Ingredients />} loader={tasksLoader} />
+        <Route path="ingredients" element={<Ingredients />} loader={tasksLoader} />
+        <Route path="recipes" element={<Recipes />}/>
         <Route path="create" element={<Create />} />
         <Route path="foodBankLocator" element={<FoodBankLocator />} />
       </Route>
