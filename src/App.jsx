@@ -13,6 +13,7 @@ import Landingpage from './pages/Landingpage'
 import Login from './pages/Login'
 import FoodBankLocator from './pages/FoodBankLocator'
 import Recipes from './pages/Recipes'
+import MyRecipes from './pages/MyRecipes'
 
 // router and routes
 const router = createBrowserRouter(
@@ -25,6 +26,7 @@ const router = createBrowserRouter(
         <Route index element={<Ingredients />} loader={tasksLoader} />
         <Route path="ingredients" element={<Ingredients />} loader={tasksLoader} />
         <Route path="recipes" element={<Recipes />}/>
+        <Route path="myrecipes" element={<MyRecipes />}/>
         <Route path="create" element={<Create />} />
         <Route path="foodBankLocator" element={<FoodBankLocator />} />
       </Route>
