@@ -8,8 +8,8 @@ const router = express.Router();
 // router.get("/", getIngredients);
 
 // add an ingredient to account's inventory
-router.post("/add", async (req, res) => {
-  const { name, quantity, expiryDate, image } = req.body();
+router.post("/add", authMiddleware, async (req, res) => {
+  const { name, quantity, expiryDate, image } = req.body;
   try {
     const newIngredient = new Ingredient({
       name,
@@ -18,6 +18,12 @@ router.post("/add", async (req, res) => {
       image,
       user: req.userId, // link ingredient to the authenticated user
     });
+
+    if (!req.userId) {
+      return res
+        .status(401)
+        .json({ message: "No user ID found - are you authenticated?" });
+    }
 
     await newIngredient.save();
 
@@ -36,8 +42,11 @@ router.post("/add", async (req, res) => {
 // get all ingredients from the account's inventory
 router.get("/", authMiddleware, async (req, res) => {
   try {
-    const account = Account.findById(req.userId).populate("ingredients");
+    // ensure the account is fetched and populated
+    const account = await Account.findById(req.userId).populate("ingredients");
     res.status(200).json({ ingredients: account.ingredients });
+    console.log("Account: ", account);
+    console.log("Account's ingredients: ", account.ingredients);
   } catch (error) {
     res
       .status(500)

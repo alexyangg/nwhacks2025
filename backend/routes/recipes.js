@@ -6,23 +6,30 @@ import Account from "../models/Account.js";
 const router = express.Router();
 
 router.post("/save", authMiddleware, async (req, res) => {
-  const { recipeId } = req.body;
+  //   const { recipeId } = req.body;
+  const { recipeId, title, image } = req.body;
 
   try {
-    const recipe = await Recipe.findById(recipeId);
-    if (!recipe) {
-      return res.status(404).json({ message: "Recipe not found" });
+    const newRecipe = new Recipe({
+      recipeId,
+      title,
+      image,
+      user: req.userId,
+    });
+
+    if (!req.userId) {
+      return res
+        .status(401)
+        .json({ message: "No user ID found - are you authenticated?" });
     }
 
-    const account = Account.findById(req.userId);
-    if (account.savedRecipes.includes(recipeId)) {
-      return res.status(400).json({ message: "Recipe already saved" });
-    }
+    await newRecipe.save();
 
-    account.savedRecipes.push(recipeId);
+    const account = await Account.findById(req.userId);
+    account.savedRecipes.push(newRecipe._id);
     await account.save();
 
-    res.status(200).json({ message: "Recipe saved successfully" });
+    res.status(200).json({ message: "Recipe added successfully" });
   } catch (error) {
     res
       .status(500)
