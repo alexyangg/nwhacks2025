@@ -24,7 +24,7 @@ export default function Recipes() {
     <Box>
       <Heading mb="20px" textAlign="center">Yummy Recipes!!</Heading>
       <SimpleGrid spacing="10px">
-        {[1, 2].map((ingredient, index) => ( // Use actual data here
+        {[1].map((ingredient, index) => ( // Use actual data here
           <Card
             key={index}
             borderTop="8px"
@@ -45,7 +45,7 @@ export default function Recipes() {
               <Box bgColor="gray.200" flexShrink={0} width="120px" height="120px" borderRadius="md">
                 <Image
                   src=""
-                  fallbackSrc="/public/img/placeholder.jpg"
+                  fallbackSrc="/img/stir-fried-tomato-and-egg.jpg"
                   objectFit="cover"
                   width="100%"
                   height="100%"
@@ -57,7 +57,7 @@ export default function Recipes() {
               <Box flex="1" borderRadius="md">
                 <VStack align="start" spacing={2}>
                   <Text fontSize="2xl" fontWeight="bold">
-                    Title {index + 1} {/* Replace with dynamic data */}
+                     Egg and Tomato Stir Fry {/* Replace with dynamic data */}
                   </Text>
                   <Text fontSize="md">
                     This is the description text that explains the title or the image. It will automatically take the remaining

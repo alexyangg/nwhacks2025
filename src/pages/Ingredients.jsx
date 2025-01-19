@@ -29,7 +29,7 @@ export default function Ingredients() {
               <Flex gap={5}>
                <Box>
                  {/* <Heading as="h3" size="sm">{ingredient.title}</Heading> */}
-                 <Heading as="h3" size="sm">Ingredient name</Heading>
+                 <Heading as="h3" size="sm">{ingredient.title}</Heading>
                  {/* <Text>by {ingredient.author}</Text> */}
                </Box>
              </Flex>
