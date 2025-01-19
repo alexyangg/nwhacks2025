@@ -6,7 +6,13 @@ import Account from "../models/Account.js";
 const router = express.Router();
 
 router.post("/register", async (req, res) => {
-  const { name, email, password } = req.body();
+  const { name, email, password } = req.body;
+
+  if (!name || !email || !password) {
+    return res
+      .status(400)
+      .json({ message: "Please provide name, email, and password." });
+  }
 
   try {
     const existingAccount = await Account.findOne({ email });
@@ -15,12 +21,13 @@ router.post("/register", async (req, res) => {
       return res.status(400).json({ message: "Account already exists" });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // const hashedPassword = await bcrypt.hash(password, 10);
 
     const newAccount = new Account({
       name,
       email,
-      password: hashedPassword,
+      //   password: hashedPassword, Avoid double hashing!
+      password,
     });
 
     await newAccount.save();
@@ -34,7 +41,7 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-  const { email, password } = req.body();
+  const { email, password } = req.body;
 
   try {
     const account = await Account.findOne({ email });
@@ -43,6 +50,9 @@ router.post("/login", async (req, res) => {
     }
 
     const isMatch = await bcrypt.compare(password, account.password);
+    console.log("Password: ", password);
+    console.log("Hashed password: ", account.password);
+    console.log("isMatch: ", isMatch);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid credentials." });
     }
@@ -53,7 +63,9 @@ router.post("/login", async (req, res) => {
 
     res.status(200).json({ message: "Login successful.", token });
   } catch (error) {
-    res.status(500).json({ message: "Error loggin in.", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error logging in.", error: error.message });
   }
 });
 
