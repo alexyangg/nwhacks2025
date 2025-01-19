@@ -40,7 +40,7 @@ export default function FoodBankLocator() {
 
         const { Place } = await google.maps.importLibrary('places');
         const { AdvancedMarkerElement } = await google.maps.importLibrary('marker');
-        
+
 
         const request = {
             textQuery: 'food bank',
@@ -64,7 +64,7 @@ export default function FoodBankLocator() {
                     map,
                     position: place.location,
                     title: place.displayName,
-                    gmpClickable: true, 
+                    gmpClickable: true,
                 });
 
                 // An info window for each marker-tb
@@ -76,6 +76,8 @@ export default function FoodBankLocator() {
                 markerView.addListener('click', () => {
                     infoWindow.open(map, markerView);
                 });
+
+
 
                 bounds.extend(place.location);
             });
