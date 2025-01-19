@@ -46,7 +46,13 @@ router.post("/save", authMiddleware, async (req, res) => {
 router.get("/saved", authMiddleware, async (req, res) => {
   try {
     const account = await Account.findById(req.userId).populate("savedRecipes");
-    res.status(200).json({ recipes: account.savedRecipes });
+
+    const recipes = await Recipe.find({ user: req.userId });
+    console.log("Found recipes:", recipes);
+    // res.status(200).json({ ingredients: account.ingredients });
+    res.status(200).json(recipes);
+
+    // res.status(200).json({ recipes: account.savedRecipes });
   } catch (error) {
     res
       .status(500)
@@ -69,6 +75,18 @@ router.get("/recommend", authMiddleware, async (req, res) => {
       .map((ingredient) => ingredient.name)
       .join(",");
     console.log(ingredientList);
+    // const fetchedRecipes = response.data.map((recipe) => ({
+    //     recipeId: recipe.id,
+    //     title: recipe.title,
+    //   }));
+    //   console.log(fetchedRecipes);
+    // const { ingredients } = req.query;
+    // const ingredientList = ingredients.join(",");
+    // const ingredientList = Array.isArray(ingredients)
+    //   ? ingredients
+    //   : ingredients.split(",");
+
+    // console.log("Selected Ingredients: ", ingredientList);
 
     const apiKey = process.env.SPOONACULAR_API_KEY;
     const response = await axios.get(
