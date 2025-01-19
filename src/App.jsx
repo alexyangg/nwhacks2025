@@ -11,6 +11,7 @@ import Ingredients, { tasksLoader } from "./pages/Ingredients";
 import Create from "./pages/Create";
 import Landingpage from "./pages/Landingpage";
 import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 import FoodBankLocator from "./pages/FoodBankLocator";
 import Recipes from "./pages/Recipes";
 import { AuthProvider } from "./context/AuthProvider.jsx";
@@ -21,6 +22,7 @@ const router = createBrowserRouter(
     <>
       <Route path="/" element={<Landingpage />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
 
       <Route path="/dashboard" element={<RootLayout />}>
         <Route index element={<Ingredients />} loader={tasksLoader} />
