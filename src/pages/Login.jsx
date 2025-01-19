@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Box,
   Button,
@@ -14,17 +14,19 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { AuthContext } from "../context/AuthProvider";
 
 export default function Login() {
   const [email, setEmail] = useState(""); // State for email input
   const [password, setPassword] = useState(""); // State for password input
   const [error, setError] = useState(""); // State for error messages
   const navigate = useNavigate(); // React Router's navigation function
+  const { setIsAuthenticated } = useContext(AuthContext);
 
   const handleLogin = async () => {
     // Replace with actual authentication
-    const correctEmail = "test@example.com";
-    const correctPassword = "password123";
+    // const correctEmail = "test@example.com";
+    // const correctPassword = "password123";
 
     try {
       const response = await axios.post(
@@ -36,6 +38,7 @@ export default function Login() {
       );
 
       localStorage.setItem("authToken", response.data.token);
+      setIsAuthenticated(true);
 
       navigate("/dashboard/ingredients");
     } catch (error) {
