@@ -6,13 +6,16 @@ import {
 } from "react-router-dom";
 
 // layouts and pages
+
 import RootLayout from "./layouts/RootLayout";
 import Ingredients, { tasksLoader } from "./pages/Ingredients";
 import Create from "./pages/Create";
 import Landingpage from "./pages/Landingpage";
 import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 import FoodBankLocator from "./pages/FoodBankLocator";
 import Recipes from "./pages/Recipes";
+import MyRecipes from './pages/MyRecipes';
 import { AuthProvider } from "./context/AuthProvider.jsx";
 
 // router and routes
@@ -21,15 +24,13 @@ const router = createBrowserRouter(
     <>
       <Route path="/" element={<Landingpage />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
 
       <Route path="/dashboard" element={<RootLayout />}>
         <Route index element={<Ingredients />} loader={tasksLoader} />
-        <Route
-          path="ingredients"
-          element={<Ingredients />}
-          loader={tasksLoader}
-        />
-        <Route path="recipes" element={<Recipes />} />
+        <Route path="ingredients" element={<Ingredients />} loader={tasksLoader} />
+        <Route path="recipes" element={<Recipes />}/>
+        <Route path="myrecipes" element={<MyRecipes />}/>
         <Route path="create" element={<Create />} />
         <Route path="foodBankLocator" element={<FoodBankLocator />} />
       </Route>

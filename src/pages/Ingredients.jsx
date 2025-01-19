@@ -2,7 +2,7 @@ import { AddIcon, EditIcon, MinusIcon, ViewIcon } from '@chakra-ui/icons';
 import { Box, Card, CardBody, CardFooter, CardHeader, Flex, SimpleGrid, Text, Heading, HStack, Button, Divider, FormControl, FormLabel, Input, Image } from '@chakra-ui/react';
 import { Form, useLoaderData } from 'react-router-dom';
 
-export default function Dashboard() {
+export default function Ingredients() {
   const ingredients = useLoaderData()
 
   return (

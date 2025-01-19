@@ -21,20 +21,27 @@ export default function Sidebar() {
             </ListItem>
             <ListItem>
                 <NavLink to="/dashboard/ingredients">
-                    <ListIcon as={EditIcon} color="white" />
+                    <ListIcon as={AtSignIcon} color="white" />
                     Ingredients
                 </NavLink>
             </ListItem>
             <ListItem>
+                <NavLink to="/dashboard/create">
+                    <ListIcon as={EditIcon} color="white" />
+                    Add Ingredients
+                </NavLink>
+            </ListItem>
+                
+            <ListItem>
                 <NavLink to="/dashboard/recipes">
                     <ListIcon as={EditIcon} color="white" />
-                    Recipes
+                    Recipes Generator
                 </NavLink>
             </ListItem>
             <ListItem>
-                <NavLink to="/dashboard/create">
-                    <ListIcon as={AtSignIcon} color="white" />
-                    Add Ingredients
+                <NavLink to="/dashboard/myrecipes">
+                    <ListIcon as={StarIcon} color="yellow" />
+                    My Recipes
                 </NavLink>
             </ListItem>
             <ListItem>
@@ -43,7 +50,7 @@ export default function Sidebar() {
                     Food Bank Locator
                 </NavLink>
             </ListItem>
-        
+
         </List>
     </Container>
   )
