@@ -61,7 +61,10 @@ export default function FoodBankLocator() {
                     map,
                     position: place.location,
                     title: place.displayName,
+                    gmpClickable: true,
                 });
+
+
 
                 bounds.extend(place.location);
             });
