@@ -9,6 +9,8 @@ const router = express.Router();
 
 // add an ingredient to account's inventory
 router.post("/add", authMiddleware, async (req, res) => {
+  console.log("Received body:", req.body); // Add this to see what data is coming in
+  console.log("User ID from auth:", req.userId); // Add this to verify userId
   const { name, quantity, expiryDate, image } = req.body;
   try {
     const newIngredient = new Ingredient({
@@ -44,7 +46,10 @@ router.get("/", authMiddleware, async (req, res) => {
   try {
     // ensure the account is fetched and populated
     const account = await Account.findById(req.userId).populate("ingredients");
-    res.status(200).json({ ingredients: account.ingredients });
+    const ingredients = await Ingredient.find({ user: req.userId });
+    console.log("Found ingredients:", ingredients);
+    // res.status(200).json({ ingredients: account.ingredients });
+    res.status(200).json(ingredients);
     console.log("Account: ", account);
     console.log("Account's ingredients: ", account.ingredients);
   } catch (error) {
