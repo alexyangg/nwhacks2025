@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Maps with City Input</title>
+    <script async
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPRSjZyS8xaBZ8O4V3qQjLlJLjUqETQpA&loading=async&libraries=places&callback=initMap">
+    </script>
+    <style>
+        /* Set the size of the map */
+        #map {
+            height: 80vh;
+            width: 100%;
+        }
+        #controls {
+            margin: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<h1>Search for foodbanks nearby using your postal code</h1>
+<div id="controls">
+    <input type="text" id="postalCode" placeholder="Enter a city name" />
+    <button onclick="searchCity()">Search</button>
+</div>
+<div id="map"></div>
+
+<script>
+    let map;
+    let marker;
+    let geocoder;
+
+    function initMap() {
+        // Default location (San Francisco, CA)
+        const defaultLocation = { lat: 37.7749, lng: -122.4194 };
+
+        // Create a map instance
+        map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 12,
+            center: defaultLocation,
+            mapId: "FoodBankMap"
+        });
+
+        findFoodBanks(defaultLocation, "San Fransico");
+
+        // Initialize the geocoder
+        geocoder = new google.maps.Geocoder();
+    }
+
+    function searchCity() {
+        const postalCode = document.getElementById("postalCode").value;
+
+        if (!postalCode) {
+            alert("Please enter a postal code name!");
+            return;
+        }
+
+        geocoder.geocode({ address: postalCode }, (results, status) => {
+            if (status === "OK") {
+                const location = results[0].geometry.location;
+                findFoodBanks(location, results[0].formatted_address);
+           } else {
+                alert("Geocoding failed: " + status);
+            }
+        });
+    }
+
+    async function findFoodBanks(location, name) {
+
+        // Center the map on the new location
+        map.setCenter(location);
+
+        const { Place, SearchNearbyRankPreference } = await google.maps.importLibrary(
+            "places",
+        );
+        const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+        const request = {
+            textQuery: "food bank",
+            fields: ["displayName", "location", "businessStatus"],
+            locationBias: location,
+            language: "en-US",
+            maxResultCount: 5,
+            region: "us",
+            useStrictTypeFiltering: false,
+        };
+
+        const { places } = await Place.searchByText(request);
+
+        if (places.length) {
+            console.log(places);
+
+            const { LatLngBounds } = await google.maps.importLibrary("core");
+            const bounds = new LatLngBounds();
+
+            // Loop through and get all the results.
+            places.forEach((place) => {
+                const markerView = new AdvancedMarkerElement({
+                    map,
+                    position: place.location,
+                    title: place.displayName,
+                });
+
+                bounds.extend(place.location);
+                console.log(place);
+            });
+            map.fitBounds(bounds);
+        } else {
+            console.log("No results");
+        }
+
+    }
+
+
+
+    // Initialize the map once the script loads
+    window.onload = initMap;
+</script>
+</body>
+</html>
