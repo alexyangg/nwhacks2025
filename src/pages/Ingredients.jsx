@@ -1,4 +1,4 @@
-import { AddIcon, EditIcon, MinusIcon, ViewIcon } from "@chakra-ui/icons";
+import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import {
   Box,
   Card,
@@ -12,18 +12,39 @@ import {
   HStack,
   Button,
   Divider,
-  FormControl,
-  FormLabel,
-  Input,
   Image,
+  Alert,
+  AlertIcon,
+  Input,
+  VStack,
 } from "@chakra-ui/react";
-import { Form, useLoaderData, useNavigate } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
   const ingredients = useLoaderData();
   const navigate = useNavigate();
 
-  const hasIngredients = ingredients && ingredients.length > 0;
+// Helper function to check expiry
+const isExpiryClose = (expiryDate) => {
+  const today = new Date();
+  const expiry = new Date(expiryDate);
+  const diffTime = expiry - today;
+  const diffDays = diffTime / (1000 * 3600 * 24);
+  return diffDays; // Return the difference in days
+};
+
+// Helper function to generate expiry message
+const expiryMsg = (diffDays) => {
+  let msg = "";
+  if (diffDays <1) {
+    msg = "This ingredient is expired";
+  } else if (diffDays <= 3) {
+    msg = "This ingredient is about to expire in 3 days or less!";
+  }else {
+    msg = ""
+  }
+  return msg;
+};
 
   return (
     <Box>
@@ -51,33 +72,30 @@ export default function Dashboard() {
               bg="white"
             >
               <CardHeader>
-                <Box bgColor="green.200" maxH="180px" overflow="hidden">
-                  {ingredient.image && (
-                    <Image
-                      src={ingredient.image}
-                      alt={ingredient.name}
-                      objectFit="cover"
-                      objectPosition="center"
-                      w="100%"
-                      h="100%"
-                    />
-                  )}
-                </Box>
+                <Image src={ingredient.image} />
               </CardHeader>
 
               <CardBody color="gray.500">
-                <Flex gap={5}>
                   <Box w="100%">
+                  <VStack gap={5} flexDir={'row'}>
                     <Heading as="h3" size="sm" mb="2">
                       {ingredient.name}
                     </Heading>
-                    <Text>Quantity: {ingredient.quantity}</Text>
-                    <Text>
-                      Expires:{" "}
-                      {new Date(ingredient.expiryDate).toLocaleDateString()}
-                    </Text>
+                    <Box>
+                      <Text>Quantity: {ingredient.quantity}</Text>
+                      <Text>
+                        Expires:{" "}
+                        {new Date(ingredient.expiryDate).toLocaleDateString()}
+                      </Text>
+                    </Box>
+                  </VStack>
+                      {isExpiryClose(ingredient.expiryDate) <=3 && (
+                        <Alert status="warning" mt="4">
+                          <AlertIcon />
+                          {expiryMsg(isExpiryClose(ingredient.expiryDate))}
+                        </Alert>
+                      )}
                   </Box>
-                </Flex>
               </CardBody>
 
               <Divider borderColor="gray.200" />
@@ -116,94 +134,10 @@ export default function Dashboard() {
         Add Ingredient
       </Button>
     </Box>
-
-    // <Box>
-    //   <Heading mb="20px" textAlign="center">
-    //     Your Ingredients
-    //   </Heading>
-
-    //   {/* Display "Add Ingredient" button if no ingredients are available */}
-    //   {!hasIngredients && (
-    //     <Button
-    //       colorScheme="green"
-    //       onClick={() => navigate("/dashboard/create")}
-    //       mb="20px"
-    //     >
-    //       Add Ingredient
-    //     </Button>
-    //   )}
-
-    //   <SimpleGrid spacing="10px" minChildWidth="300px">
-    //     {hasIngredients &&
-    //       ingredients.map((ingredient) => (
-    //         <Card
-    //           key={ingredient.id}
-    //           borderTop="8px"
-    //           borderColor="green.400"
-    //           bg="white"
-    //         >
-    //           <CardHeader>
-    //             <Box bgColor="green.200" maxH="180px" overflow="hidden">
-    //               <Image
-    //                 src={ingredient.img} // Replace with your image URL
-    //                 alt={ingredient.title}
-    //                 objectFit="cover"
-    //                 objectPosition="center"
-    //                 w="100%"
-    //                 h="100%"
-    //               />
-    //             </Box>
-    //           </CardHeader>
-
-    //           <CardBody color="gray.500">
-    //             <Flex gap={5}>
-    //               <Box>
-    //                 <Heading as="h3" size="sm">
-    //                   {ingredient.title}
-    //                 </Heading>
-    //                 {/* <Heading as="h3" size="sm">
-    //                   {ingredient.description}
-    //                 </Heading> */}
-    //                 {/* <Text>by {ingredient.author}</Text> */}
-    //               </Box>
-    //             </Flex>
-    //             {/* <Text>{ingredient.description}</Text> */}
-    //           </CardBody>
-
-    //           <Divider borderColor="gray.200" />
-
-    //           <CardFooter>
-    //             <HStack>
-    //               <Button variant={"ghost"} leftIcon={<AddIcon />}>
-    //                 Add
-    //               </Button>
-    //               <Form>
-    //                 <FormControl>
-    //                   {/* <FormLabel>Edit Amount</FormLabel> */}
-    //                   <Input
-    //                     type="text"
-    //                     name="title"
-    //                     placeHolder={ingredient.quantity}
-    //                     textAlign="center"
-    //                   />
-    //                 </FormControl>
-    //               </Form>
-
-    //               <Button variant={"ghost"} leftIcon={<MinusIcon />}>
-    //                 Remove
-    //               </Button>
-    //             </HStack>
-    //           </CardFooter>
-    //         </Card>
-    //       ))}
-    //   </SimpleGrid>
-    // </Box>
   );
 }
 
 export const tasksLoader = async () => {
-  // const res = await fetch("http://localhost:3000/tasks");
-
   try {
     const token = localStorage.getItem("authToken");
 
